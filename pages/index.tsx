@@ -64,8 +64,8 @@ export default function Home({ projects }) {
                   <div className="w-0 lg:w-1/5 hidden lg:flex items-center">
                     {[...Array.from(Array(3).keys())].map((j) => (
                       <div key={j} className="h-6">
-                        <div className={` relative w-4 h-4`}>
-                          <div className="absolute top-0 left-0 rounded-full p-2 border bg-indigo-500 w-6 h-6"></div>
+                        <div className={` relative w-4 h-6`}>
+                          <div className="absolute top-0 left-0 rounded-full p-2 border bg-indigo-500 w-6 h-6 hover:scale-110"></div>
                         </div>
                       </div>
                     ))}

@@ -13,10 +13,11 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
-function Layout({ children }) {
+import { server } from "../config";
 
+function Layout({ children }) {
   const router = useRouter();
-  
+
   const [projectMenuExpanded, setProjectMenuExpanded] = useState(false);
 
   useEffect(() => {
@@ -89,22 +90,39 @@ function Layout({ children }) {
 }
 
 function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
+  const [projects, setProjects] = useState([]);
+
   const [searchInput, setSearchInput] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // atatched to close icon enxt to search bar
   function stopSearching() {
     setSearchInput(false);
     setSearchTerm("");
   }
 
+  // attached to serach icon/text for opening inline input
   function openSearchIfClosed() {
     if (searchInput == false) {
       setSearchInput(true);
     }
   }
 
+  // get projects and pass our search query
+  async function getProjects(term) {
+    const res = await fetch(`${server}/api/projects?searchQ=${term}`);
+    const data = await res.json();
+    setProjects(data.projects);
+  }
+
+  // on load
   useEffect(() => {
-    console.log(searchTerm);
+    getProjects(searchTerm);
+  }, []);
+
+  //
+  useEffect(() => {
+    getProjects(searchTerm);
   }, [searchTerm]);
 
   return (
@@ -179,11 +197,27 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
         </ul>
         <div className="px-4 py-8">
           <h3 className="font-bold text-xl text-white">Projects</h3>
-          <ul className="flex flex-col space-y-2 px-6 p-4 text-sm">
-            {[1, 2, 3, 4].map((item, i) => (
-              <li key={item} className="hover:text-white">Project {item}</li>
-            ))}
-          </ul>
+          {projects && projects.length > 0 ? (
+            <ul className="flex flex-col space-y-2 px-6 p-4 text-sm">
+              {projects.map((project, i) => (
+                <li key={i} className="hover:text-white">
+                  <Link href={`/projects/${project._id}`}>
+                    <span>{project.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="my-4 flex items-center spaxe-x-2 text-sm ml-6 ">
+              <p>
+                0 results {" "}
+                {searchTerm && (
+                  <>for: <span className="font-mono p-1 bg-black text-white">{searchTerm}</span>
+                  </>
+                )}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </>
