@@ -14,6 +14,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { server } from "../config";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function Layout({ children }) {
   const router = useRouter();
@@ -33,6 +35,7 @@ function Layout({ children }) {
           className="flex flex-col grow relative z-[1] pl-20"
         >
           <main>{children}</main>
+          <ToastContainer />
         </div>
 
         {/* SIDEBAR */}
@@ -136,7 +139,7 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
       <div
         className={`${
           projectMenuExpanded ? `translate-x-0` : `-translate-x-full`
-        } transition duration-200 z-[-2] absolute h-screen top-0 bottom-0 left-full w-auto min-w-[200px] bg-gray-800`}
+        } transition duration-200 z-[-2] absolute h-screen top-0 bottom-0 left-full w-80 bg-gray-800`}
       >
         {projectMenuExpanded && (
           <div className="relative w-full">
@@ -212,7 +215,7 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
               <p>
                 0 results {" "}
                 {searchTerm && (
-                  <>for: <span className="font-mono p-1 bg-black text-white">{searchTerm}</span>
+                  <>for:<br/>  <span className="font-bold text-base ">{searchTerm}</span>
                   </>
                 )}
               </p>

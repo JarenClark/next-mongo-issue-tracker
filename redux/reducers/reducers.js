@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
-
-const reducer = combineReducers({
-
+import { allProjectsReducer, projectDetailsReducer } from "./projectReducer";
+const reducers = combineReducers({
+    allProjects: allProjectsReducer,
+    project: projectDetailsReducer
 })
 
-export default reducer
+export default reducers

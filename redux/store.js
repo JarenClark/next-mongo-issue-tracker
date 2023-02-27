@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import { HYDRATE, createWrapper } from 'next-redux-wrapper'
 import thunkMiddleware from 'redux-thunk'
-const reducers = []
+import reducers from './reducers/reducers'
 
 // add devtools in development
 const bindMiddlware = (middlware) => {

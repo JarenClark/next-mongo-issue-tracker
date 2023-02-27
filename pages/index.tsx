@@ -1,13 +1,22 @@
 import { server } from "../config";
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { Inter } from "@next/font/google";
 import { Layout } from "../components";
+import { getProjects } from '../redux/actions/projectActions'
+import { wrapper } from '../redux/store'
+import { useSelector } from 'react-redux'
+
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home({ projects }) {
+export default function Home() {
+
+  const { projects } = useSelector(state => state.allProjects)
+console.log(projects )
   return (
     <>
       <Head>
@@ -90,14 +99,6 @@ export default function Home({ projects }) {
   );
 }
 
-export const getServerSideProps = async () => {
-  const res = await fetch(`${server}/api/projects`);
-  const data = await res.json();
-  const projects = data.projects;
-  console.log(`projects are`, projects);
-  return {
-    props: {
-      projects,
-    },
-  };
-};
+export const getServerSideProps:GetServerSideProps = wrapper.getServerSideProps(store => async() => {
+  await store.dispatch(getProjects())
+})
