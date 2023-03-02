@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { wrapper } from "../redux/store";
+
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -9,6 +10,10 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
+// export const getServerSideProps:GetServerSideProps = wrapper.getServerSideProps(store => async() => {
+//   console.log(`.app.tsx serverSideProps`)
+//   await store.dispatch(getProjects())
+// })
 
 
 export default wrapper.withRedux(App)

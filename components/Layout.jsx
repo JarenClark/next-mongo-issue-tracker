@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { server } from "../config";
 import { ToastContainer } from "react-toastify";
+import { useSelector, dispatch } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css';
 
 function Layout({ children }) {
@@ -93,12 +94,17 @@ function Layout({ children }) {
 }
 
 function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
-  const [projects, setProjects] = useState([]);
+// from redux
+  const { projects } = useSelector(state => state.allProjects)
 
+  // array of projects to show
+  const [filteredProjects, setFilteredProjects] = useState(projects);
+
+  // if search input is open
   const [searchInput, setSearchInput] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // atatched to close icon enxt to search bar
+  // atatched to close icon next to search bar
   function stopSearching() {
     setSearchInput(false);
     setSearchTerm("");
@@ -113,9 +119,8 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
 
   // get projects and pass our search query
   async function getProjects(term) {
-    const res = await fetch(`${server}/api/projects?searchQ=${term}`);
-    const data = await res.json();
-    setProjects(data.projects);
+    let filtered = projects.filter(x => x.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+    setFilteredProjects(filtered);
   }
 
   // on load
@@ -200,9 +205,9 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
         </ul>
         <div className="px-4 py-8">
           <h3 className="font-bold text-xl text-white">Projects</h3>
-          {projects && projects.length > 0 ? (
+          {filteredProjects && filteredProjects.length > 0 ? (
             <ul className="flex flex-col space-y-2 px-6 p-4 text-sm">
-              {projects.map((project, i) => (
+              {filteredProjects.map((project, i) => (
                 <li key={i} className="hover:text-white">
                   <Link href={`/projects/${project._id}`}>
                     <span>{project.name}</span>

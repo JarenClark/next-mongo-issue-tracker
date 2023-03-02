@@ -2,10 +2,10 @@ import Head from "next/head";
 import React from "react";
 import { Layout } from "../../components";
 import { server } from "../../config";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { wrapper } from '../../redux/store'
-import { getProjectDetails } from '../../redux/actions/projectActions'
+import { getProjectDetails, getProjects } from '../../redux/actions/projectActions'
 
 
 function ProjectPage() {
@@ -16,7 +16,9 @@ function ProjectPage() {
 
   return (
     <>
-      <Head></Head>
+      <Head>
+        <title>{project ? project.name : 'Project Not Found'}</title>
+      </Head>
       <Layout>
         {project ? (
           <div className="p-8 lg:p-20 container mx-auto">
@@ -35,6 +37,7 @@ function ProjectPage() {
 export default ProjectPage;
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async({params}) => {
+  await store.dispatch(getProjects())
   await store.dispatch(getProjectDetails(params.id))
 })
 

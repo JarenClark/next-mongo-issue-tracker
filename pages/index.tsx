@@ -16,7 +16,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
 
   const { projects } = useSelector(state => state.allProjects)
-console.log(projects )
+
   return (
     <>
       <Head>
