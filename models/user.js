@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 import validator from 'validator'
+import bcrypt from 'bcryptjs'
+
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -43,5 +45,18 @@ const userSchema = new mongoose.Schema({
     resetPasswordExpire: Date
 })
 
+// Encrypting password before saving user
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        next()
+    }
+
+    this.password = await bcrypt.hash(this.password, 10)
+})
+
+// Compare user passwords
+userSchema.methods.comparePassword = async function (entered) {
+    return await bcrypt.compare(entered, this.password)
+}
 
 export default mongoose.models.User || mongoose.model('User', userSchema)

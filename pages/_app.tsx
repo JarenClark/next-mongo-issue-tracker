@@ -1,11 +1,13 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { wrapper } from "../redux/store";
-
+import { SessionProvider } from "next-auth/react";
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Component {...pageProps} />
+      <SessionProvider>
+        <Component {...pageProps} />
+      </SessionProvider>
     </>
   );
 }
@@ -15,5 +17,4 @@ function App({ Component, pageProps }: AppProps) {
 //   await store.dispatch(getProjects())
 // })
 
-
-export default wrapper.withRedux(App)
+export default wrapper.withRedux(App);
