@@ -48,25 +48,25 @@ const inputClasses = `block w-full bg-transparent border border-zinc-700 rounded
 const buttonClasses = `mt-6 w-full bg-indigo-600 text-white text-center py-2 px-12 flex justify-center items-center rounded-md`;
 function Login({ setFormToShow }) {
   const { register, handleSubmit, error } = useForm();
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
   const onSubmit = (data) => {
     console.log(data);
   };
 
-  useEffect(() => {
-    let inputs = document.querySelectorAll("form.register-form input");
-    function resetRegistrationErrorMessage() {
-      setErrorMessage("");
-    }
-    for (let i = 0; i < inputs.length; i++) {
-      inputs[i].addEventListener("focus", resetRegistrationErrorMessage);
-    }
-    return () => {
-      for (let i = 0; i < inputs.length; i++) {
-        inputs[i].removeEventListener("focus", resetRegistrationErrorMessage);
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   let inputs = document.querySelectorAll("form.register-form input");
+  //   function resetRegistrationErrorMessage() {
+  //     setErrorMessage("");
+  //   }
+  //   for (let i = 0; i < inputs.length; i++) {
+  //     inputs[i].addEventListener("focus", resetRegistrationErrorMessage);
+  //   }
+  //   return () => {
+  //     for (let i = 0; i < inputs.length; i++) {
+  //       inputs[i].removeEventListener("focus", resetRegistrationErrorMessage);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <>
@@ -112,7 +112,7 @@ function Login({ setFormToShow }) {
 }
 
 function Register({ setFormToShow }) {
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
   const { register, handleSubmit, error } = useForm();
   const onSubmit = (data) => {
     console.log(data);
@@ -123,20 +123,20 @@ function Register({ setFormToShow }) {
     }
   };
 
-  useEffect(() => {
-    let inputs = document.querySelectorAll("form.register-form input");
-    function resetRegistrationErrorMessage() {
-      setErrorMessage("");
-    }
-    for (let i = 0; i < inputs.length; i++) {
-      inputs[i].addEventListener("focus", resetRegistrationErrorMessage);
-    }
-    return () => {
-      for (let i = 0; i < inputs.length; i++) {
-        inputs[i].removeEventListener("focus", resetRegistrationErrorMessage);
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   let inputs = document.querySelectorAll("form.register-form input");
+  //   function resetRegistrationErrorMessage() {
+  //     setErrorMessage("");
+  //   }
+  //   for (let i = 0; i < inputs.length; i++) {
+  //     inputs[i].addEventListener("focus", resetRegistrationErrorMessage);
+  //   }
+  //   return () => {
+  //     for (let i = 0; i < inputs.length; i++) {
+  //       inputs[i].removeEventListener("focus", resetRegistrationErrorMessage);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <>

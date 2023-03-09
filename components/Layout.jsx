@@ -15,20 +15,31 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { server } from "../config";
 import { ToastContainer } from "react-toastify";
-import { useSelector, dispatch } from 'react-redux'
-import 'react-toastify/dist/ReactToastify.css';
-
+import { useSelector, dispatch } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
+import { CreateProjectModal } from "./index";
 function Layout({ children }) {
   const router = useRouter();
 
   const [projectMenuExpanded, setProjectMenuExpanded] = useState(false);
+  const [createProjectModalIsOpen, setCreateProjectModalIsOpen] =
+    useState(false);
 
   useEffect(() => {
     setProjectMenuExpanded(false);
+    setCreateProjectModalIsOpen(false)
   }, [router]);
 
   return (
     <>
+      {createProjectModalIsOpen && (
+        <>
+          <CreateProjectModal
+            createProjectModalIsOpen={createProjectModalIsOpen}
+            setCreateProjectModalIsOpen={setCreateProjectModalIsOpen}
+          />
+        </>
+      )}
       <div className="flex w-screen h-screen">
         {/* MAIN */}
         <div
@@ -85,6 +96,7 @@ function Layout({ children }) {
             <ProjectMenu
               projectMenuExpanded={projectMenuExpanded}
               setProjectMenuExpanded={setProjectMenuExpanded}
+              setCreateProjectModalIsOpen={setCreateProjectModalIsOpen}
             />
           </div>
         </div>
@@ -93,9 +105,13 @@ function Layout({ children }) {
   );
 }
 
-function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
-// from redux
-  const { projects } = useSelector(state => state.allProjects)
+function ProjectMenu({
+  projectMenuExpanded,
+  setProjectMenuExpanded,
+  setCreateProjectModalIsOpen,
+}) {
+  // from redux
+  const { projects } = useSelector((state) => state.allProjects);
 
   // array of projects to show
   const [filteredProjects, setFilteredProjects] = useState(projects);
@@ -119,7 +135,9 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
 
   // get projects and pass our search query
   async function getProjects(term) {
-    let filtered = projects.filter(x => x.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+    let filtered = projects.filter(
+      (x) => x.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+    );
     setFilteredProjects(filtered);
   }
 
@@ -160,7 +178,13 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
         )}
         <ul className="flex flex-col space-y-3 mt-8 px-4 pb-8 border-b border-gray-400">
           {/* NEW PROJECT */}
-          <li className="inline-flex space-x-2 cursor-pointer group hover:text-blue-400">
+          <li
+            onClick={() => {
+              setProjectMenuExpanded(false)
+              setCreateProjectModalIsOpen(true)
+            }}
+            className="inline-flex space-x-2 cursor-pointer group hover:text-blue-400"
+          >
             <PlusIcon className="w-4 h-4" />
             <span className="text-sm">Add</span>
           </li>
@@ -218,9 +242,12 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
           ) : (
             <div className="my-4 flex items-center spaxe-x-2 text-sm ml-6 ">
               <p>
-                0 results {" "}
+                0 results{" "}
                 {searchTerm && (
-                  <>for:<br/>  <span className="font-bold text-base ">{searchTerm}</span>
+                  <>
+                    for:
+                    <br />{" "}
+                    <span className="font-bold text-base ">{searchTerm}</span>
                   </>
                 )}
               </p>
@@ -231,4 +258,5 @@ function ProjectMenu({ projectMenuExpanded, setProjectMenuExpanded }) {
     </>
   );
 }
+
 export default Layout;
