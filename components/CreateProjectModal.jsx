@@ -34,8 +34,10 @@ function CreateProjectModal({
         overlayClassName={"ProjectModalOverlay"}
         isOpen={createProjectModalIsOpen}
         appElement={document.getElementById("__next")}
+        shouldCloseOnOverlayClick={true}
+        onRequestClose={() => setCreateProjectModalIsOpen(false)}
       >
-        <div className="w-screen h-screen flex justify-center items-center">
+        {/* <div className="w-screen h-screen flex justify-center items-center"> */}
           <div className="max-w-lg bg-gray-900 mx-auto w-full border border-zinc-700 p-8  rounded-2xl">
             <div className="flex justify-end mb-4">
               <button
@@ -98,7 +100,7 @@ function CreateProjectModal({
               </fieldset>
             </form>
           </div>
-        </div>
+        {/* </div> */}
       </Modal>
     </>
   );

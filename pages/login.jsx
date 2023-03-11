@@ -2,11 +2,12 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { signIn, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function LoginOrRegisterPage() {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [formToShow, setFormToShow] = useState("login");
   const showForm = (type) => {
     switch (type) {
@@ -20,13 +21,13 @@ function LoginOrRegisterPage() {
         return <Login setFormToShow={setFormToShow} />;
     }
   };
-  useEffect(() => {
-    if (status == "authenticated") {
-      console.log("authed");
-    } else {
-      console.log("not authed");
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if (status == "authenticated") {
+  //     console.log("authed", session);
+  //   } else {
+  //     console.log("not authed", session);
+  //   }
+  // }, [status]);
 
   return (
     <>
@@ -42,31 +43,34 @@ function LoginOrRegisterPage() {
     </>
   );
 }
+
 // styling
 const labelClasses = `block mb-2 text-sm`;
 const inputClasses = `block w-full bg-transparent border border-zinc-700 rounded-md p-2 mb-4`;
 const buttonClasses = `mt-6 w-full bg-indigo-600 text-white text-center py-2 px-12 flex justify-center items-center rounded-md`;
+
+// LOGIN FORM
 function Login({ setFormToShow }) {
   const { register, handleSubmit, error } = useForm();
-  // const [errorMessage, setErrorMessage] = useState("");
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   let inputs = document.querySelectorAll("form.register-form input");
-  //   function resetRegistrationErrorMessage() {
-  //     setErrorMessage("");
-  //   }
-  //   for (let i = 0; i < inputs.length; i++) {
-  //     inputs[i].addEventListener("focus", resetRegistrationErrorMessage);
-  //   }
-  //   return () => {
-  //     for (let i = 0; i < inputs.length; i++) {
-  //       inputs[i].removeEventListener("focus", resetRegistrationErrorMessage);
-  //     }
-  //   };
-  // }, []);
+  const onSubmit = async (data) => {
+    const { email, password } = data;
+    console.log('data is',data);
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+      callbackUrl: "/",
+    });
+    setLoading(false);
+
+    if (result.error) {
+      toast.error(result.error);
+    } else {
+      window.location.href = "/";
+    }
+  };
 
   return (
     <>
@@ -94,7 +98,11 @@ function Login({ setFormToShow }) {
                 {...register("password", { required: true })}
               />
             </div>
-            <button className={buttonClasses} type="submit">
+            <button
+              disabled={loading}
+              className={`${buttonClasses} disabled:opacity-50`}
+              type="submit"
+            >
               Submit
             </button>
           </fieldset>
@@ -111,40 +119,21 @@ function Login({ setFormToShow }) {
   );
 }
 
+// REGISTRATION FORM
 function Register({ setFormToShow }) {
-  // const [errorMessage, setErrorMessage] = useState("");
   const { register, handleSubmit, error } = useForm();
   const onSubmit = (data) => {
     console.log(data);
     if (data.password != data.passwordConfirm) {
-      // setErrorMessage("Password & Password Confirm must match");
       toast.error("Password & Confirm Password must match!");
       return;
     }
   };
 
-  // useEffect(() => {
-  //   let inputs = document.querySelectorAll("form.register-form input");
-  //   function resetRegistrationErrorMessage() {
-  //     setErrorMessage("");
-  //   }
-  //   for (let i = 0; i < inputs.length; i++) {
-  //     inputs[i].addEventListener("focus", resetRegistrationErrorMessage);
-  //   }
-  //   return () => {
-  //     for (let i = 0; i < inputs.length; i++) {
-  //       inputs[i].removeEventListener("focus", resetRegistrationErrorMessage);
-  //     }
-  //   };
-  // }, []);
-
   return (
     <>
       <div>
         <h2 className="font-bold text-3xl text-center">Register</h2>
-        {/* {errorMessage && (
-          <p className=" text-center m-4 text-red-500">{errorMessage}</p>
-        )} */}
         <form onSubmit={handleSubmit(onSubmit)} className="my-8 register-form">
           <fieldset>
             <div className="flex flex-wrap -mx-2">
@@ -218,3 +207,23 @@ function Register({ setFormToShow }) {
 }
 
 export default LoginOrRegisterPage;
+
+export async function getServerSideProps(context) {
+
+  const session = await getSession({ req: context.req })
+
+  console.log(`session stringify is ${JSON.stringify(session,null,4)}`)
+  if (session) {
+      return {
+          redirect: {
+              destination: '/',
+              permanent: false
+          }
+      }
+  }
+
+  return {
+      props: {}
+  }
+
+}
