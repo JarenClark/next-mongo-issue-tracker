@@ -1,13 +1,13 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn, useSession } from "next-auth/react";
-import { getSession } from "next-auth/react";
+import { signIn, useSession, getSession } from "next-auth/react";
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function LoginOrRegisterPage() {
-  // const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
   const [formToShow, setFormToShow] = useState("login");
   const showForm = (type) => {
     switch (type) {
@@ -21,13 +21,13 @@ function LoginOrRegisterPage() {
         return <Login setFormToShow={setFormToShow} />;
     }
   };
-  // useEffect(() => {
-  //   if (status == "authenticated") {
-  //     console.log("authed", session);
-  //   } else {
-  //     console.log("not authed", session);
-  //   }
-  // }, [status]);
+  useEffect(() => {
+    if (status == "authenticated") {
+      console.log("session is ", session,"status is ", status);
+    } else {
+      console.log("session is ", session,"status is ", status);
+    }
+  }, [status]);
 
   return (
     <>
@@ -213,7 +213,7 @@ export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req })
 
   console.log(`session stringify is ${JSON.stringify(session,null,4)}`)
-  if (session) {
+  if (session && session != null) {
       return {
           redirect: {
               destination: '/',

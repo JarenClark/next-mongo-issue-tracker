@@ -27,7 +27,7 @@ function Layout({ children }) {
 
   useEffect(() => {
     setProjectMenuExpanded(false);
-    setCreateProjectModalIsOpen(false)
+    setCreateProjectModalIsOpen(false);
   }, [router]);
 
   return (
@@ -90,7 +90,9 @@ function Layout({ children }) {
               </ul>
             </div>
             <div className="p-8">
-              <div className="rounded-full bg-red-500 p-2 text-white">JC</div>
+              <Link href={`/login`}>
+                <div className="rounded-full bg-red-500 p-2 text-white">JC</div>
+              </Link>
             </div>
 
             <ProjectMenu
@@ -180,8 +182,8 @@ function ProjectMenu({
           {/* NEW PROJECT */}
           <li
             onClick={() => {
-              setProjectMenuExpanded(false)
-              setCreateProjectModalIsOpen(true)
+              setProjectMenuExpanded(false);
+              setCreateProjectModalIsOpen(true);
             }}
             className="inline-flex space-x-2 cursor-pointer group hover:text-blue-400"
           >

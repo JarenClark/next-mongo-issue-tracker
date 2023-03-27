@@ -33,13 +33,13 @@ export default function Home() {
           <div className="mt-8 mb-16">
             <h2>Pinned Projects</h2>
             <ul className="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((item, i) => (
+              {projects.slice(0,2).map((project, i) => (
                 <li
-                  key={item}
+                  key={i}
                   className="border border-zinc-700 rounded-xl overflow-hidden flex items-stretch"
                 >
                   <div className="p-8 bg-indigo-500"></div>
-                  <div className="p-4">Project {item}</div>
+                  <div className="p-4">{project.name}</div>
                 </li>
               ))}
             </ul>
