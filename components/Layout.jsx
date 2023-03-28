@@ -18,7 +18,11 @@ import { ToastContainer } from "react-toastify";
 import { useSelector, dispatch } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { CreateProjectModal } from "./index";
+import { signIn, useSession, getSession } from "next-auth/react";
+
 function Layout({ children }) {
+  // const { data: session, status } = useSession();
+
   const router = useRouter();
 
   const [projectMenuExpanded, setProjectMenuExpanded] = useState(false);
@@ -89,7 +93,12 @@ function Layout({ children }) {
                 {/* Comments */}
               </ul>
             </div>
+
             <div className="p-8">
+              {/* {JSON.stringify(session, null, 4)}
+              <br />
+              {JSON.stringify(status, null, 4)}
+              <br /> */}
               <Link href={`/login`}>
                 <div className="rounded-full bg-red-500 p-2 text-white">JC</div>
               </Link>

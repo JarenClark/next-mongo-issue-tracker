@@ -5,9 +5,9 @@ import { SessionProvider } from "next-auth/react";
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <SessionProvider>
+      {/* <SessionProvider> */}
         <Component {...pageProps} />
-      </SessionProvider>
+      {/* </SessionProvider> */}
     </>
   );
 }

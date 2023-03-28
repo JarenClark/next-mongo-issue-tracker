@@ -6,7 +6,7 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 import dbConnect from '../../../config/dbConnect'
 import User from "../../../models/user";
 //import { clientPromise } from "../../../config/dbConnect";
-// import { MongoClient } from "mongodb"
+import { MongoClient } from "mongodb"
 import clientPromise from "./mongo";
 
 export default NextAuth({
@@ -18,10 +18,6 @@ export default NextAuth({
         CredentialsProvider({
 
             name: "Credentials",
-            // `credentials` is used to generate a form on the sign in page.
-            // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-            // e.g. domain, username, password, 2FA token, etc.
-            // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
               email: { label: "Email", type: "email", placeholder: "" },
               password: { label: "Password", type: "password" }
@@ -31,29 +27,27 @@ export default NextAuth({
 
                 dbConnect();
 
-
                 const { email, password } = credentials;
 
-                console.log('step 1')
                 // Check if email and password is entered
                 if (!email || !password) {
                     throw new Error('Please enter email or password');
                 }
-                console.log('step 2')
+
                 // Find user in the database
                 const user = await User.findOne({ email }).select('+password')
-                console.log('step 3')
+
                 if (!user) {
                     throw new Error('Invalid Email or Password')
                 }
-                console.log('step 4')
+
                 // Check if password is correct or not
                 const isPasswordMatched = await user.comparePassword(password);
-                console.log('step 5')
+
                 if (!isPasswordMatched) {
                     throw new Error('Invalid Email or Password')
                 }
-                console.log('step 6')
+
                 return Promise.resolve(user)
 
             }

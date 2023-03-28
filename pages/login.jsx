@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function LoginOrRegisterPage() {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [formToShow, setFormToShow] = useState("login");
   const showForm = (type) => {
     switch (type) {
@@ -21,13 +21,13 @@ function LoginOrRegisterPage() {
         return <Login setFormToShow={setFormToShow} />;
     }
   };
-  useEffect(() => {
-    if (status == "authenticated") {
-      console.log("session is ", session,"status is ", status);
-    } else {
-      console.log("session is ", session,"status is ", status);
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if (status == "authenticated") {
+  //     console.log("session is ", session,"status is ", status);
+  //   } else {
+  //     console.log("session is ", session,"status is ", status);
+  //   }
+  // }, [status]);
 
   return (
     <>
@@ -57,6 +57,7 @@ function Login({ setFormToShow }) {
   const onSubmit = async (data) => {
     const { email, password } = data;
     console.log('data is',data);
+
     const result = await signIn("credentials", {
       redirect: false,
       email,
