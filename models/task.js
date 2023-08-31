@@ -6,6 +6,13 @@ const taskSchema = new mongoose.Schema({
         required: [true, 'Please enter task name'],
         trim: true,
     },
+    description: {
+        type: String,
+        trim: true,
+    },
+    type: {
+        type: String
+    },
     status: {
         type: String,
         enum: {

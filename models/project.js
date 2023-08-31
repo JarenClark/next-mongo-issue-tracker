@@ -6,18 +6,18 @@ const projectSchema = new mongoose.Schema({
         required: [true, 'Please enter project name'],
         trim: true,
     },
-    groups: [
-        {
-            group_name: {
-                type: String,
-                required: true
-            },
-            color: {
-                type: String,
-                required:false,
-            }
-        }
-    ],
+    // groups: [
+    //     {
+    //         group_name: {
+    //             type: String,
+    //             required: true
+    //         },
+    //         color: {
+    //             type: String,
+    //             required:false,
+    //         }
+    //     }
+    // ],
     createdBy: {
         type: mongoose.Schema.ObjectId,
         ref: 'User'

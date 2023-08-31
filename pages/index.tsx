@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { Inter } from "@next/font/google";
-import { Layout } from "../components";
+import  Layout  from "@/components/Layout";
 import { getProjects } from '../redux/actions/projectActions'
 import { wrapper } from '../redux/store'
 import { useSelector } from 'react-redux'

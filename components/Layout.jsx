@@ -50,7 +50,7 @@ function Layout({ children }) {
           onClick={() => setProjectMenuExpanded(false)}
           className="flex flex-col grow relative z-[1] pl-20"
         >
-          <main>{children}</main>
+          <main className="">{children}</main>
           <ToastContainer />
         </div>
 

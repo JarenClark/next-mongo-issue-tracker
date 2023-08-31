@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React from "react";
-import { Layout } from "../../components";
+import  Layout from "@/components/Layout";
 import { server } from "../../config";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";

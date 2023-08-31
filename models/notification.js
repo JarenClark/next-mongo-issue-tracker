@@ -9,6 +9,5 @@ const notificationSchema = new Schema({
   created_at: { type: Date, default: Date.now }, // Timestamp when the notification was created
 });
 
-const Notification = mongoose.model('Notification', notificationSchema);
 
-module.exports = Notification;
+export default mongoose.models.Notification || mongoose.model('Notification', notificationSchema)
